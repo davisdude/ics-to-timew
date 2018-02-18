@@ -38,6 +38,8 @@ def standardizeDatetime( timeStr, timezone ):
         timeStr = specialFormat.group( 2 )
 
     # Handles dates input as zulu time
+    # Datetime objects must be naive for use by rrules
+    # (see https://github.com/dateutil/dateutil/issues/102)
     if timeStr[-1:] == 'Z':
         timeStr = timeStr[:-1]
         return pytz.utc.localize( dateutil.parser.parse( timeStr ) )\
