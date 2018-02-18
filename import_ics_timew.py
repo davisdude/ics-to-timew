@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 
-# TODO: Incorporate DST and VEVENT TZNAME
 import argparse
 from datetime import datetime
 
