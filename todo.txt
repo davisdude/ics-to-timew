@@ -1,0 +1,15 @@
+* Implement more ics objects:
+	* VTIMEZONE:  https://www.kanzaki.com/docs/ical/vtimezone.html
+	* VTODO:      https://www.kanzaki.com/docs/ical/vtodo.html
+	* VJOURNAL:   https://www.kanzaki.com/docs/ical/vjournal.html
+	* VALARM:     https://www.kanzaki.com/docs/ical/valarm.html
+	* In general: https://www.kanzaki.com/docs/ical/
+
+* Infinite events
+	* Current idea: Create hook that is called if date is past a certain
+	  threshold that creates a set time's worth of events
+
+	* Use a data file to store the infinite events and their rrules, etc.
+	  that gets parsed to create the events
+
+	* Make the .date file for infinite events separate
