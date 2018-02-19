@@ -2,6 +2,7 @@
 
 import argparse
 from datetime import datetime
+import subprocess
 
 import parse_ics
 
@@ -42,8 +43,21 @@ def datetimeToZulu( datetime, timezone ):
     return timezone.normalize( timezone.localize( datetime ) )\
             .astimezone( pytz.utc ).strftime( '%Y%m%dT%H%M%SZ' )
 
-def toTimewEntry( startTimeStr, endTimeStr, tags ):
-    return 'inc %s - %s # %s' % ( startTimeStr, endTimeStr, tags )
+def toTimewEntry( event, startTimeStr, endTimeStr, tags ):
+    entry = subprocess.Popen(
+            [ 'timew', 'track', startTimeStr, '-', endTimeStr, tags ],
+            stdout = subprocess.PIPE,
+            stderr = subprocess.PIPE
+    )
+
+    output, errors = entry.communicate()
+    if entry.returncode != 0:
+        print( 'Error tracking event %s from %s to %s: %s' % (
+            event.summary,
+            startTimeStr,
+            endTimeStr,
+            errors,
+        ) )
 
 #------------------------------------------------------------------------------
 # Parse file
@@ -67,18 +81,7 @@ for event in cal.events:
                 dtstart = datetimeToZulu( date, event.timezone )
                 dtend   = datetimeToZulu( date + event.datetime_duration, event.timezone )
 
-                entries.append( toTimewEntry( dtstart, dtend, tags ) )
+                toTimewEntry( event, dtstart, dtend, tags )
         continue
 
-    entries.append( toTimewEntry( event.formatted_dtstart, event.formatted_dtend, tags ) )
-
-#------------------------------------------------------------------------------
-# Output file
-#------------------------------------------------------------------------------
-# Creates output file
-now = datetime.now()
-outFilename = calendarFilename + '-' + now.strftime( '%Y%m%d' ) + '-00.data'
-outFile = open( parsedArgs.output_directory + '/' + outFilename, 'w+' )
-
-# Writes events to file
-outFile.write( '\n'.join( entries ) )
+    toTimewEntry( event, event.formatted_dtstart, event.formatted_dtend, tags )
