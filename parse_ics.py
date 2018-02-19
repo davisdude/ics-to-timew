@@ -216,7 +216,7 @@ veventPattern = re.compile( r'^BEGIN:VEVENT(.*?)END:VEVENT\s*$', re.S | re.M )
 
 class Calendar:
     def __init__( self, calendarStr ):
-        self.calname = getEventMatch( calendarStr, 'X-WR-CALNAME' )
+        self.calname = getEventMatch( calendarStr, 'X-WR-CALNAME' ).replace( '"', '\'' )
         self.defaultTimezone = getEventMatch( calendarStr, 'X-WR-TIMEZONE' )
         self.events = []
 

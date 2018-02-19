@@ -65,13 +65,11 @@ def toTimewEntry( event, startTimeStr, endTimeStr, tags ):
 calString = calendarFile.read()
 cal = parse_ics.Calendar( calString )
 
-entries = []
-
 for event in cal.events:
     if event.isAllDay():
         continue
 
-    tags = '"' + event.summary + '" ' + passedTagsStr
+    tags = '"' + cal.calname + '" "' + event.summary + '" ' + passedTagsStr
     if event.doesRepeat():
         # TODO: Handle infinite events
         # Idea: Create hook event that checks if date is past certain time
