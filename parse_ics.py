@@ -146,7 +146,7 @@ class RepeatedEvent:
 
 class Event:
     def __init__( self, eventStr, parent ):
-        self.summary =  getEventMatch( eventStr, 'SUMMARY' ).replace( '"', '' )
+        self.summary =  getEventMatch( eventStr, 'SUMMARY' ).replace( '"', '\'' )
         self.dtstart =  getEventMatch( eventStr, 'DTSTART', '[:;]' )
         self.dtend =    getEventMatch( eventStr, 'DTEND',   '[:;]' )
         self.duration = getEventMatch( eventStr, 'DURATION' )
